@@ -1,0 +1,38 @@
+.discoverButtons {
+  position: fixed;
+  bottom: 5vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.discoverButtons .MuiIconButton-root {
+  background-color: #fff;
+  box-shadow: 0px 10px 53px 0px rgba(0, 0, 0, 0.3) !important;
+}
+
+.discoverButtons__replay {
+  padding: 1vw !important;
+  color: #f5b748 !important;
+}
+
+.discoverButtons__left {
+  padding: 1vw !important;
+  color: #ec5e6f !important;
+}
+
+.discoverButtons__star {
+  padding: 1vw !important;
+  color: #62b4f9 !important;
+}
+
+.discoverButtons__right {
+  padding: 1vw !important;
+  color: #76e2b3 !important;
+}
+
+.discoverButtons__lightning {
+  padding: 1vw !important;
+  color: #915dd1 !important;
+}
