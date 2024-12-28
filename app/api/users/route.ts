@@ -5,39 +5,62 @@ import { NextRequest, NextResponse } from "next/server";
 
 const saltRounds = 10;
 
-export async function hashPassword(password: string) {
+// Hash password
+async function hashPassword(password: string): Promise<string> {
   const salt = await bcrypt.genSalt(saltRounds);
-  const hashedPassword = await bcrypt.hash(password, salt);
-  return hashedPassword;
+  return await bcrypt.hash(password, salt);
 }
 
-// Create a new user
+export async function GET() {
+  try {
+    const users = await User.find({});
+    return NextResponse.json({ users }, { status: 200 });
+  } catch (err) {
+    return NextResponse.json({
+      error: err instanceof Error ? err.message : "An unknown error occurred",
+      status: 500,
+    });
+  }
+}
+
+// Create new user with image upload
 export async function POST(req: NextRequest) {
   await connectMongoDB();
-  const { name, email, password, image } = await req.json();
+  const formData = await req.formData();
+
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const image = formData.get("image") as File;
+
+  if (!name || !email || !password || !image) {
+    return NextResponse.json({ message: "Missing fields" }, { status: 400 });
+  }
+
   const user = await User.findOne({ email });
 
   if (user) {
-    return NextResponse.json(
-      { message: "User already exists" },
-      {
-        status: 409,
-      }
-    );
+    return NextResponse.json({ message: "User already exists" }, { status: 409 });
   }
 
   try {
     const hashedPassword = await hashPassword(password);
-    await User.create({ name, email, hashedPassword, image });
+
+    // Convert image to Base64
+    const buffer = Buffer.from(await image.arrayBuffer());
+    const base64Image = buffer.toString("base64");
+
+    await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      image: base64Image,
+    });
+
     return NextResponse.json({ message: "User created" }, { status: 201 });
-  } catch (err: unknown) {
-    // Type guard to check if err is an instance of Error
-    if (err instanceof Error) {
-      return NextResponse.json({ error: err.message, status: 500 });
-    }
-    // Handle cases where err might not be an Error (fallback)
+  } catch (err) {
     return NextResponse.json({
-      error: "An unknown error occurred",
+      error: err instanceof Error ? err.message : "An unknown error occurred",
       status: 500,
     });
   }
