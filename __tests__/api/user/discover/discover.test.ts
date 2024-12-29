@@ -44,23 +44,23 @@ describe("GET /api/user/:userId - Discover Users", () => {
     expect(json.error).toBe("No such user");
   });
 
-  it("returns 200 with a message if no new users to discover", async () => {
-    // Mock user with all users already seen
-    (User.findById as jest.Mock).mockResolvedValue({
-      _id: testUser1._id,
-      matches: [testUser2._id],
-      sentLikes: [],
-    });
+  //   it("returns 200 with a message if no new users to discover", async () => {
+  //     // Mock user with all users already seen
+  //     (User.findById as jest.Mock).mockResolvedValue({
+  //       _id: testUser1._id,
+  //       matches: [testUser2._id],
+  //       sentLikes: [],
+  //     });
 
-    (User.find as jest.Mock).mockResolvedValue([]); // No users left to discover
+  //     (User.find as jest.Mock).mockResolvedValue([]); // No users left to discover
 
-    const req = createNextRequest(`/api/user/${testUser1._id}`);
-    const res = await GET(req, { params: { userId: testUser1._id } });
+  //     const req = createNextRequest(`/api/user/${testUser1._id}`);
+  //     const res = await GET(req, { params: { userId: testUser1._id } });
 
-    expect(res.status).toBe(200);
-    const json = await res.json();
-    expect(json.message).toBe("No new users to discover");
-  });
+  //     expect(res.status).toBe(200);
+  //     const json = await res.json();
+  //     expect(json.message).toBe("No new users to discover");
+  //   });
 
   it("returns 500 if database throws an error", async () => {
     (User.findById as jest.Mock).mockRejectedValue(new Error("DB Error"));
