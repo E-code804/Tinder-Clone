@@ -3,6 +3,7 @@ import User from "@/app/db/models/User";
 import { UserParams } from "@/app/interfaces/UserInterfaces";
 import { NextRequest, NextResponse } from "next/server";
 // TODO: when an undo is done, must remove ID from received/sent likes arrays.
+
 // Send a like from current user to another user
 export async function POST(req: NextRequest, { params }: { params: UserParams }) {
   const { userId } = params;
@@ -19,7 +20,7 @@ export async function POST(req: NextRequest, { params }: { params: UserParams })
     );
   }
 
-  // Check if currentUser is in likedUser's sent likes (this is a match)
+  // Check if currentUser is in likedUser's sent likes (this is a match). make this logic into utils if possible for matches route.
   try {
     if (likedUser.sentLikes.includes(userId)) {
       const [
@@ -45,7 +46,7 @@ export async function POST(req: NextRequest, { params }: { params: UserParams })
 
       if (!removedLikedFromUserReceived) {
         return NextResponse.json(
-          { message: "Could not remove user from likes sent." },
+          { message: "Could not remove user from received likes." },
           { status: 404 }
         );
       }
