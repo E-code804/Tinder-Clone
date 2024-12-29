@@ -6,23 +6,29 @@ import { NextRequest, NextResponse } from "next/server";
 // Getting other profiles to display in user's discover
 export async function GET(req: NextRequest, { params }: { params: UserParams }) {
   const { userId } = params;
-  await connectMongoDB();
-  const user = await User.findById(userId);
 
-  if (!user) {
-    return NextResponse.json({ error: "No such user" }, { status: 404 });
+  try {
+    await connectMongoDB();
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return NextResponse.json({ error: "No such user" }, { status: 404 });
+    }
+
+    const { matches, sentLikes } = user;
+    const seenUsers = [...matches, ...sentLikes, userId];
+    const discoverUsers = await User.find({ _id: { $nin: seenUsers } });
+
+    // In case user has no one left to discover
+    if (discoverUsers.length === 0) {
+      return NextResponse.json(
+        { message: "No new users to discover" },
+        { status: 200 }
+      );
+    }
+    return NextResponse.json({ users: discoverUsers }, { status: 200 });
+  } catch (error) {
+    console.error("Database Error:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
-
-  const { matches, sentLikes } = user;
-  const seenUsers = [...matches, ...sentLikes, userId];
-  const discoverUsers = await User.find({ _id: { $nin: seenUsers } });
-
-  // In case user has no one left to discover
-  if (discoverUsers.length === 0) {
-    return NextResponse.json(
-      { message: "No new users to discover" },
-      { status: 200 }
-    );
-  }
-  return NextResponse.json({ users: discoverUsers }, { status: 200 });
 }

@@ -8,15 +8,22 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest, { params }: { params: UserParams }) {
   const { userId } = params;
   const { likedUserId } = await req.json();
+  let likedUser;
 
-  await connectMongoDB();
+  try {
+    await connectMongoDB();
 
-  const likedUser = await User.findById(likedUserId); // turn this into a function
-
-  if (!likedUser) {
+    likedUser = await User.findById(likedUserId); // turn this into a function
+    if (!likedUser) {
+      return NextResponse.json(
+        { message: "Could not find liked user to matches." },
+        { status: 404 }
+      );
+    }
+  } catch (error: any) {
     return NextResponse.json(
-      { message: "Could not find liekd user to matches." },
-      { status: 404 }
+      { message: `Error occurred. ${error.message}` },
+      { status: 500 }
     );
   }
 
@@ -37,28 +44,28 @@ export async function POST(req: NextRequest, { params }: { params: UserParams })
         User.updateOne({ _id: userId }, { $push: { matches: likedUserId } }),
       ]);
 
-      if (!removedUserFromSent) {
+      if (removedUserFromSent.modifiedCount === 0) {
         return NextResponse.json(
           { message: "Could not remove user from likes sent." },
           { status: 404 }
         );
       }
 
-      if (!removedLikedFromUserReceived) {
+      if (removedLikedFromUserReceived.modifiedCount === 0) {
         return NextResponse.json(
           { message: "Could not remove user from received likes." },
           { status: 404 }
         );
       }
 
-      if (!addUserToLikedMatches) {
+      if (addUserToLikedMatches.modifiedCount === 0) {
         return NextResponse.json(
           { message: "Could not add user to matches." },
           { status: 404 }
         );
       }
 
-      if (!addLikedToUserMatches) {
+      if (addLikedToUserMatches.modifiedCount === 0) {
         return NextResponse.json(
           { message: "Could not add liked user to matches." },
           { status: 404 }
@@ -100,6 +107,9 @@ export async function POST(req: NextRequest, { params }: { params: UserParams })
       { status: 201 }
     );
   } catch (error) {
-    return NextResponse.json({ error: "Internal server error." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error occurred. Internal server error." },
+      { status: 500 }
+    );
   }
 }

@@ -25,13 +25,14 @@ export async function GET(req: NextRequest, { params }: { params: UserParams }) 
 export async function POST(req: NextRequest, { params }: { params: UserParams }) {
   const { userId } = params;
   const { acceptedUserId } = await req.json();
-  await connectMongoDB();
 
   // When a user accepts from their received list, must:
   // 1. remove userId from acceptedUserId's sent likes list.
   // 2. remove acceptedUserID from userId's received list.
   // 3. Add both IDs to the other's respective matches list.
   try {
+    await connectMongoDB();
+
     const [
       removeUserIdFromSent,
       removeAcceptedIdFromReceived,
@@ -44,28 +45,28 @@ export async function POST(req: NextRequest, { params }: { params: UserParams })
       User.updateOne({ _id: acceptedUserId }, { $push: { matches: userId } }),
     ]);
 
-    if (!removeUserIdFromSent) {
+    if (removeUserIdFromSent.modifiedCount === 0) {
       return NextResponse.json(
         { message: "Could not remove user from likes sent." },
         { status: 404 }
       );
     }
 
-    if (!removeAcceptedIdFromReceived) {
+    if (removeAcceptedIdFromReceived.modifiedCount === 0) {
       return NextResponse.json(
         { message: "Could not remove accepted user from received likes." },
         { status: 404 }
       );
     }
 
-    if (!addUserIdToMatches) {
+    if (addUserIdToMatches.modifiedCount === 0) {
       return NextResponse.json(
         { message: "Could not add user to matches." },
         { status: 404 }
       );
     }
 
-    if (!addAcceptedIdToMatches) {
+    if (addAcceptedIdToMatches.modifiedCount === 0) {
       return NextResponse.json(
         { message: "Could not add accepted user to matches." },
         { status: 404 }
