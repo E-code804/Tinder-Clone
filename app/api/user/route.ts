@@ -23,7 +23,7 @@ export async function GET() {
   }
 }
 
-// Create new user with image upload
+// Create new user with image upload, TODO: sanitize inputs
 export async function POST(req: NextRequest) {
   await connectMongoDB();
   const formData = await req.formData();
