@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import React, { Suspense, useEffect, useState } from "react";
 import TinderCard from "react-tinder-card";
 import "./styles.css";
 
@@ -9,6 +10,7 @@ type Person = {
 };
 
 const TinderCards = () => {
+  const userId = "67708034f8f82821ba418f98";
   const [cards, setCards] = useState<Person[]>([]);
 
   const swiped = (direction: any, nameToDelete: string) => {
@@ -22,8 +24,13 @@ const TinderCards = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetch("/api/users");
-      const json = await data.json();
+      const response = await fetch(`/api/user/discover/${userId}`);
+
+      if (!response.ok) {
+        // Adjust error msg here
+        console.log("Error has occurred");
+      }
+      const json = await response.json();
 
       console.log(json.users);
       setCards(json.users); // may need to force users to upload jpeg. string starts with /9j/ for JPEG or iVBORw0K for PNG.

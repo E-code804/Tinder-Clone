@@ -2,7 +2,6 @@ import connectMongoDB from "@/app/db/connect";
 import User from "@/app/db/models/User";
 import { UserParams } from "@/app/interfaces/UserInterfaces";
 import { NextRequest, NextResponse } from "next/server";
-
 // TODO: when an undo is done, must remove ID from received/sent likes arrays.
 // Send a like from current user to another user
 export async function POST(req: NextRequest, { params }: { params: UserParams }) {
@@ -11,17 +10,72 @@ export async function POST(req: NextRequest, { params }: { params: UserParams })
 
   await connectMongoDB();
 
-  const currentUser = await User.findById(userId); // turn this into a function
-  const likedUser = await User.findById(likedUserId); // turn this into a function DO NOT NEED HERE
+  const likedUser = await User.findById(likedUserId); // turn this into a function
 
-  if (!currentUser || !likedUser) {
-    return NextResponse.json({ error: "No such user" }, { status: 404 });
+  if (!likedUser) {
+    return NextResponse.json(
+      { message: "Could not find liekd user to matches." },
+      { status: 404 }
+    );
   }
 
-  // Check if likedUser is in currentUser's sent likes (this is a match)
+  // Check if currentUser is in likedUser's sent likes (this is a match)
+  try {
+    if (likedUser.sentLikes.includes(userId)) {
+      const [
+        removedUserFromSent,
+        removedLikedFromUserReceived,
+        addUserToLikedMatches,
+        addLikedToUserMatches,
+      ] = await Promise.all([
+        // Remove userId from likedUser's sentLikes and remove likedUserId from userId's received
+        User.updateOne({ _id: likedUserId }, { $pull: { sentLikes: userId } }),
+        User.updateOne({ _id: userId }, { $pull: { receivedLikes: likedUserId } }),
+        // Put userId in likedUser's matches and vice versa
+        User.updateOne({ _id: likedUserId }, { $push: { matches: userId } }),
+        User.updateOne({ _id: userId }, { $push: { matches: likedUserId } }),
+      ]);
+
+      if (!removedUserFromSent) {
+        return NextResponse.json(
+          { message: "Could not remove user from likes sent." },
+          { status: 404 }
+        );
+      }
+
+      if (!removedLikedFromUserReceived) {
+        return NextResponse.json(
+          { message: "Could not remove user from likes sent." },
+          { status: 404 }
+        );
+      }
+
+      if (!addUserToLikedMatches) {
+        return NextResponse.json(
+          { message: "Could not add user to matches." },
+          { status: 404 }
+        );
+      }
+
+      if (!addLikedToUserMatches) {
+        return NextResponse.json(
+          { message: "Could not add liked user to matches." },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json(
+        { message: "Successfully matched!" },
+        { status: 201 }
+      );
+    }
+  } catch (error: any) {
+    return NextResponse.json(
+      { message: `Error occurred. ${error.message}` },
+      { status: 500 }
+    );
+  }
 
   // Otherwise, add currentUser's ID to likedUser's received and likedUser to currentUser's sent
-  // MAKE SURE NOT ALREADY IN SENT/RECEIVED
   try {
     const [likedUserResult, currentUserResult] = await Promise.all([
       User.updateOne({ _id: likedUserId }, { $push: { receivedLikes: userId } }),
