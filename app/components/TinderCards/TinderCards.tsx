@@ -1,26 +1,30 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from "react";
+import { useUser } from "@/app/hooks/useUserContext";
+import { Person } from "@/app/interfaces/UserInterfaces";
+import { sendLike } from "@/app/utils/sendLike";
+import { Types } from "mongoose";
+import React, { useEffect, useState } from "react";
 import TinderCard from "react-tinder-card";
 import "./styles.css";
 
-type Person = {
-  name: string;
-  image: string;
-};
-
 const TinderCards = () => {
-  const userId = "67708034f8f82821ba418f98";
-  const [cards, setCards] = useState<Person[]>([]);
+  const userId = new Types.ObjectId("67708034f8f82821ba418f98");
   const [loading, setLoading] = useState<Boolean>(true);
+  const { state, dispatch } = useUser();
 
-  const swiped = (direction: any, nameToDelete: string) => {
+  const swiped = async (direction: any, id: Types.ObjectId) => {
     // Eventually add the removed person to an array for undos.
-    console.log(`removing: ${nameToDelete}, ${direction}`);
+    console.log(`removing: ${id}, ${direction}`);
+    if (direction === "right") {
+      await sendLike(userId, id);
+    }
+
+    dispatch({ type: "REMOVE_CARD", payload: { userId: id } });
   };
 
-  const outOfFrame = (name: string) => {
-    console.log(name + " left the screen");
+  const outOfFrame = (id: Types.ObjectId) => {
+    console.log(id + " left the screen");
   };
 
   useEffect(() => {
@@ -34,7 +38,7 @@ const TinderCards = () => {
       const json = await response.json();
 
       setLoading(false);
-      setCards(json.users); // may need to force users to upload jpeg. string starts with /9j/ for JPEG or iVBORw0K for PNG.
+      dispatch({ type: "SET_CARDS", payload: json.users }); // may need to force users to upload jpeg. string starts with /9j/ for JPEG or iVBORw0K for PNG.
     };
 
     fetchData();
@@ -45,16 +49,16 @@ const TinderCards = () => {
       <div className="tinderCards__cardContainer">
         {loading ? (
           <p>Loading new users</p>
-        ) : cards.length === 0 ? (
+        ) : state.cards.length === 0 ? (
           <p>No new users for you to discover.</p>
         ) : (
-          cards.map((card) => (
+          state.cards.map((card) => (
             <TinderCard
               className="swipe"
-              key={card.name}
+              key={card._id.toString()}
               preventSwipe={["up", "down"]}
-              onSwipe={(dir) => swiped(dir, card.name)}
-              onCardLeftScreen={() => outOfFrame(card.name)}
+              onSwipe={(dir) => swiped(dir, card._id)}
+              onCardLeftScreen={() => outOfFrame(card._id)}
             >
               <div
                 className="card"
