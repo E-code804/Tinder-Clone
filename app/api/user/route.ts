@@ -25,25 +25,25 @@ export async function GET() {
 
 // Create new user with image upload, TODO: sanitize inputs
 export async function POST(req: NextRequest) {
-  await connectMongoDB();
-  const formData = await req.formData();
-
-  const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-  const image = formData.get("image") as File;
-
-  if (!name || !email || !password || !image) {
-    return NextResponse.json({ message: "Missing fields" }, { status: 400 });
-  }
-
-  const user = await User.findOne({ email });
-
-  if (user) {
-    return NextResponse.json({ message: "User already exists" }, { status: 409 });
-  }
-
   try {
+    await connectMongoDB();
+    const formData = await req.formData();
+
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const image = formData.get("image") as File;
+
+    if (!name || !email || !password || !image) {
+      return NextResponse.json({ message: "Missing fields" }, { status: 400 });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (user) {
+      return NextResponse.json({ message: "User already exists" }, { status: 409 });
+    }
+
     const hashedPassword = await hashPassword(password);
 
     // Convert image to Base64

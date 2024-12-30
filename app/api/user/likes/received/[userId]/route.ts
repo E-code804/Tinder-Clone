@@ -1,14 +1,14 @@
 import connectMongoDB from "@/app/db/connect";
+import Message from "@/app/db/models/Message";
 import User from "@/app/db/models/User";
 import { UserParams } from "@/app/interfaces/UserInterfaces";
 import { NextRequest, NextResponse } from "next/server";
 
 // Return users in the current user's received likes list
 export async function GET(req: NextRequest, { params }: { params: UserParams }) {
-  const { userId } = params;
-  await connectMongoDB();
-
   try {
+    const { userId } = params;
+    await connectMongoDB();
     const userReceivedLikes = await User.findById(userId, { receivedLikes: 1 });
 
     if (!userReceivedLikes) {
@@ -23,14 +23,13 @@ export async function GET(req: NextRequest, { params }: { params: UserParams }) 
 
 // User accepts a received liked. Will likely have to consider if trying to accept an id the DNE, authorization here.
 export async function POST(req: NextRequest, { params }: { params: UserParams }) {
-  const { userId } = params;
-  const { acceptedUserId } = await req.json();
-
   // When a user accepts from their received list, must:
   // 1. remove userId from acceptedUserId's sent likes list.
   // 2. remove acceptedUserID from userId's received list.
   // 3. Add both IDs to the other's respective matches list.
   try {
+    const { userId } = params;
+    const { acceptedUserId } = await req.json();
     await connectMongoDB();
 
     const [
