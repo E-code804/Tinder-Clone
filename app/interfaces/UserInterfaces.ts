@@ -10,7 +10,7 @@ export interface Person {
   image: string;
 }
 
-export type State = { cards: Person[]; undoCards: Person[] };
+export type State = { userId: Types.ObjectId; cards: Person[]; undoCards: Person[] };
 
 export type Action =
   | { type: "SET_CARDS"; payload: Person[] }
