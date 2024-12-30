@@ -14,8 +14,10 @@ export async function GET(req: NextRequest, { params }: { params: UserParams }) 
     if (!userMatches) {
       return NextResponse.json({ message: "User not found." }, { status: 404 });
     }
+    // Could validate the IDs in userMatches if nec.
+    const matchedUsers = await User.find({ _id: { $in: userMatches.matches } });
 
-    return NextResponse.json({ userMatches }, { status: 200 });
+    return NextResponse.json({ matchedUsers }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Internal server error." }, { status: 500 });
   }

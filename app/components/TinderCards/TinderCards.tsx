@@ -33,6 +33,7 @@ const TinderCards = () => {
         // Adjust error msg here
         console.log("Error has occurred");
       }
+
       const json = await response.json();
       console.log(json.users);
 

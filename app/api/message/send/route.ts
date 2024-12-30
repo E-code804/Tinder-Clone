@@ -2,6 +2,7 @@ import connectMongoDB from "@/app/db/connect";
 import Message from "@/app/db/models/Message";
 import { NextRequest, NextResponse } from "next/server";
 
+// TODO: Sanitize messages and encrypt. Make sure ALL POST reqs are sanitized and parameterized.
 export async function POST(req: NextRequest) {
   try {
     const { sender, receiver, message } = await req.json(); // have check to ensure sender, recipient is valid and in messages.
