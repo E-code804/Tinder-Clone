@@ -4,8 +4,8 @@ import { UserParams } from "@/app/interfaces/UserInterfaces";
 import { NextRequest, NextResponse } from "next/server";
 
 // Get the current user
-export async function GET(req: NextRequest, { params }: { params: UserParams }) {
-  const { userId } = params;
+export async function GET(req: NextRequest, context: { params: UserParams }) {
+  const { userId } = await context.params;
   try {
     await connectMongoDB();
     const user = await User.findById(userId);

@@ -1,11 +1,13 @@
 "use client";
 
 import { useMessage } from "@/app/hooks/useMessageContext";
+import { useUser } from "@/app/hooks/useUserContext";
 import { useState } from "react";
 import "./styles.css";
 
 const Chat = () => {
-  const userId = "67708034f8f82821ba418f98";
+  const { state } = useUser();
+  const { userId } = state;
   const { state: messageState, dispatch: messageDispatch } = useMessage(); // Add loading state for message in here
   const { chats, matchId } = messageState;
   const [message, setMessage] = useState<string>("");
@@ -54,7 +56,9 @@ const Chat = () => {
             <div
               key={chat._id.toString()}
               className={
-                chat.sender.toString() === userId ? "user__chat" : "match__chat"
+                chat.sender.toString() === userId.toString()
+                  ? "user__chat"
+                  : "match__chat"
               }
             >
               {chat.message}

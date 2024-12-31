@@ -4,7 +4,7 @@ import { createContext, ReactNode, useReducer } from "react";
 import { UserContextAction, UserContextState } from "../interfaces/UserInterfaces";
 
 const initialState: UserContextState = {
-  userId: new Types.ObjectId("67708034f8f82821ba418f98"),
+  userId: new Types.ObjectId("67708599f8f82821ba418f9c"),
   cards: [],
   undoCards: [],
 };
