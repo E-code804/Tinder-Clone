@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Getting other profiles to display in user's discover
 export async function GET(req: NextRequest, { params }: { params: UserParams }) {
-  const { userId } = params;
+  const { userId } = await params;
 
   try {
     await connectMongoDB();

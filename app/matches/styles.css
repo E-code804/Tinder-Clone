@@ -1,3 +1,10 @@
 .matches__page {
   display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.matches__display {
+  display: flex;
+  min-height: 100%;
 }
