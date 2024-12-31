@@ -1,0 +1,30 @@
+.matchList {
+  background-color: rgb(189, 189, 189);
+  height: 100vh;
+  width: 25%;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.matchedUser {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #000;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.matchedUser img {
+  width: 75px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.matchedUser:hover {
+  background-color: #e0e0e0;
+}
+
+.clicked {
+  background-color: #e0e0e0;
+}

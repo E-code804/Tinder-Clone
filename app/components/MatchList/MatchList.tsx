@@ -1,14 +1,24 @@
 "use client";
 
+import { useMessage } from "@/app/hooks/useMessageContext";
 import { useUser } from "@/app/hooks/useUserContext";
 import { Person } from "@/app/interfaces/UserInterfaces";
+import { Types } from "mongoose";
 import React, { useEffect, useState } from "react";
+import "./styles.css";
 
 const MatchList = () => {
   const [matchedUsers, setMatchedUsers] = useState<Person[]>([]);
   const [loading, setLoading] = useState<Boolean>(true);
-  const { state, dispatch } = useUser();
+  const { state } = useUser();
   const { userId } = state;
+  const [clickedMatchId, setclickedMatchId] = useState<string>("");
+  const { state: messageState, dispatch: messageDispatch } = useMessage();
+
+  const getChats = (matchId: Types.ObjectId) => {
+    console.log(`Loading chat between ${userId} and ${matchId}`);
+    setclickedMatchId(matchId.toString());
+  };
 
   useEffect(() => {
     const fetchMatchedUsers = async () => {
@@ -28,13 +38,36 @@ const MatchList = () => {
     fetchMatchedUsers();
   }, []);
 
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const response = await fetch(
+        `http://localhost:3000/api/message/retrieve?sender=${userId}&receiver=${clickedMatchId}`
+      );
+
+      if (!response.ok) {
+        console.log("Error occurred");
+      }
+
+      const json = await response.json();
+      messageDispatch({ type: "SET_CHATS", payload: json.messages });
+    };
+
+    fetchMessages();
+  }, [clickedMatchId]);
+
   return (
-    <div>
+    <div className="matchList">
       {loading ? (
         <p>Loading Users</p>
       ) : (
         matchedUsers.map((user) => (
-          <div key={user._id.toString()}>
+          <div
+            key={user._id.toString()}
+            className={`matchedUser ${
+              clickedMatchId === user._id.toString() ? "clicked" : ""
+            }`}
+            onClick={() => getChats(user._id)}
+          >
             <img src={`data:image/jpeg;base64,${user.image}`} /> <h1>{user.name}</h1>
           </div>
         ))

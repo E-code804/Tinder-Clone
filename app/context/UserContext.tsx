@@ -1,20 +1,20 @@
 "use client";
 import { Types } from "mongoose";
-import { createContext, ReactNode, useContext, useReducer, useState } from "react";
-import { Action, State } from "../interfaces/UserInterfaces";
+import { createContext, ReactNode, useReducer } from "react";
+import { UserContextAction, UserContextState } from "../interfaces/UserInterfaces";
 
-const initialState: State = {
+const initialState: UserContextState = {
   userId: new Types.ObjectId("67708034f8f82821ba418f98"),
   cards: [],
   undoCards: [],
 };
 
 export const UserContext = createContext<{
-  state: State;
-  dispatch: React.Dispatch<Action>;
+  state: UserContextState;
+  dispatch: React.Dispatch<UserContextAction>;
 } | null>(null);
 
-export const userReducer = (state: State, action: Action) => {
+export const userReducer = (state: UserContextState, action: UserContextAction) => {
   switch (action.type) {
     case "SET_CARDS":
       return { ...state, cards: action.payload, undoCards: [] };
@@ -48,7 +48,7 @@ export const userReducer = (state: State, action: Action) => {
   }
 };
 
-export const UserConextProvider = ({ children }: { children: ReactNode }) => {
+export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
 
   return (
