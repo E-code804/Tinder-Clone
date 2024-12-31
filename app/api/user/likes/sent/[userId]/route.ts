@@ -5,8 +5,11 @@ import { NextRequest, NextResponse } from "next/server";
 // TODO: when an undo is done, must remove ID from received/sent likes arrays.
 
 // Send a like from current user to another user
-export async function POST(req: NextRequest, { params }: { params: UserParams }) {
-  const { userId } = params;
+export async function POST(
+  req: NextRequest,
+  { params }: { params: Promise<UserParams> }
+) {
+  const { userId } = await params;
   const { likedUserId } = await req.json();
   let likedUser;
 

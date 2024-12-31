@@ -4,10 +4,12 @@ import { UserParams } from "@/app/interfaces/UserInterfaces";
 import { NextRequest, NextResponse } from "next/server";
 
 // Getting other profiles to display in user's discover
-export async function GET(req: NextRequest, { params }: { params: UserParams }) {
-  const { userId } = await params;
-
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<UserParams> }
+) {
   try {
+    const { userId } = await params;
     await connectMongoDB();
     const user = await User.findById(userId);
 

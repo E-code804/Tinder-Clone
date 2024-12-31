@@ -4,7 +4,10 @@ import { UserParams } from "@/app/interfaces/UserInterfaces";
 import { NextRequest, NextResponse } from "next/server";
 
 // Return users in the current user's matches list
-export async function GET(req: NextRequest, { params }: { params: UserParams }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<UserParams> }
+) {
   try {
     const { userId } = await params;
     await connectMongoDB();
