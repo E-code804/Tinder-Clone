@@ -8,6 +8,7 @@ import {
 
 const initialMessageState: MessageContextState = {
   chats: [],
+  matchId: new Types.ObjectId(),
 };
 
 export const MessageContext = createContext<{
@@ -21,9 +22,10 @@ export const userReducer = (
 ) => {
   switch (action.type) {
     case "SET_CHATS":
-      return { chats: action.payload };
+      const { chats, matchId } = action.payload;
+      return { chats, matchId };
     case "ADD_CHAT":
-      return { chats: [...state.chats, action.payload.chat] };
+      return { ...state, chats: [...state.chats, action.payload.chat] };
     default:
       return state;
   }

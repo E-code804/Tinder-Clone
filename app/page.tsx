@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       {/* Header */}
-      <Header />
+      {/* <Header /> */}
       {/* Cards */}
       <TinderCards />
       {/* Bottom Buttons */}

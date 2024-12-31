@@ -30,8 +30,9 @@ export type UserContextAction =
 
 export type MessageContextState = {
   chats: ChatType[];
+  matchId: Types.ObjectId;
 };
 
 export type MessageContextAction =
-  | { type: "SET_CHATS"; payload: ChatType[] }
+  | { type: "SET_CHATS"; payload: { chats: ChatType[]; matchId: Types.ObjectId } } // matchId tells Chat.tsx who the receiver is.
   | { type: "ADD_CHAT"; payload: { chat: ChatType } };

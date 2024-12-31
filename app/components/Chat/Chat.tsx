@@ -7,17 +7,40 @@ import "./styles.css";
 const Chat = () => {
   const userId = "67708034f8f82821ba418f98";
   const { state: messageState, dispatch: messageDispatch } = useMessage(); // Add loading state for message in here
-  const { chats } = messageState;
+  const { chats, matchId } = messageState;
   const [message, setMessage] = useState<string>("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    // TODO: Implement below
-    //messageDispatch({type: "ADD_CHAT", payload: {chat:message}})
+
+    try {
+      const response = await fetch("http://localhost:3000/api/message/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sender: userId,
+          receiver: matchId,
+          message: message,
+        }),
+      });
+
+      if (!response.ok) {
+        console.log("Error");
+      }
+
+      const { newMessage } = await response.json();
+      messageDispatch({ type: "ADD_CHAT", payload: { chat: newMessage } });
+    } catch (error: any) {
+      console.error(error.message);
+    } finally {
+      setMessage("");
+    }
   };
 
   // Look back at what should be displayed when a user enters this page, hasn't sent a message yet, hasn't clicked on someone, etc.

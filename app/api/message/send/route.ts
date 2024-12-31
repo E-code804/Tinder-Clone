@@ -8,13 +8,13 @@ export async function POST(req: NextRequest) {
     const { sender, receiver, message } = await req.json(); // have check to ensure sender, recipient is valid and in messages.
     await connectMongoDB();
 
-    await Message.create({
+    const newMessage = await Message.create({
       sender: sender,
       receiver: receiver,
       message: message,
     });
 
-    return NextResponse.json({ message: "Sent messages" }, { status: 201 });
+    return NextResponse.json({ newMessage }, { status: 201 });
   } catch (err) {
     return NextResponse.json({
       error: err instanceof Error ? err.message : "An unknown error occurred",

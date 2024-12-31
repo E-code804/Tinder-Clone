@@ -5,10 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Return users in the current user's matches list
 export async function GET(req: NextRequest, { params }: { params: UserParams }) {
-  const { userId } = params;
-  await connectMongoDB();
-
   try {
+    const { userId } = await params;
+    await connectMongoDB();
     const userMatches = await User.findById(userId, { matches: 1 });
 
     if (!userMatches) {
