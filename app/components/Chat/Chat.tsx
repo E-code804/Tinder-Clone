@@ -20,7 +20,7 @@ const Chat = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/api/message/send", {
+      const response = await fetch("/api/message/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

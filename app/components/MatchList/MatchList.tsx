@@ -15,7 +15,7 @@ const MatchList = () => {
   const [clickedMatchId, setclickedMatchId] = useState<Types.ObjectId>(
     new Types.ObjectId()
   );
-  const { state: messageState, dispatch: messageDispatch } = useMessage();
+  const { dispatch: messageDispatch } = useMessage();
 
   const getChats = (matchId: Types.ObjectId) => {
     console.log(`Loading chat between ${userId} and ${matchId}`);
@@ -43,7 +43,7 @@ const MatchList = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       const response = await fetch(
-        `http://localhost:3000/api/message/retrieve?sender=${userId}&receiver=${clickedMatchId}`
+        `/api/message/retrieve?sender=${userId}&receiver=${clickedMatchId}`
       );
 
       if (!response.ok) {
