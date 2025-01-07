@@ -1,0 +1,86 @@
+.signup__page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: "Arial", sans-serif;
+  background-color: #fbecec;
+}
+
+.signup__page h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.signup__page p {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.signup__form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.signup__form input {
+  padding: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.signup__form input:focus {
+  border-color: #ff5864;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 88, 100, 0.5);
+}
+
+.signup__form p {
+  color: #ff5864;
+  margin: -0.75rem 0 1rem;
+  font-size: 0.9rem;
+}
+
+.signup__form label {
+  font-weight: bold;
+}
+
+.signup__form button {
+  padding: 14px;
+  font-size: 1rem;
+  color: white;
+  background-color: #ff5864;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.signup__form button:hover {
+  background-color: #e44e5a;
+}
+
+.signup__form button:active {
+  background-color: #cc3f4c;
+}
+
+@media (max-width: 600px) {
+  .signup__form {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  .signup__page h1 {
+    font-size: 2rem;
+  }
+}
