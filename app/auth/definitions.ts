@@ -35,7 +35,14 @@ export type FormState =
         email?: string[];
         password?: string[];
         image?: string[];
+        message?: string;
       };
       message?: string;
+      redirectTo?: string;
     }
   | undefined;
+
+export type SessionPayload = {
+  userId: string | number;
+  expiresAt: Date;
+};

@@ -1,6 +1,7 @@
 "use server";
 
-import { FormState, SignUpFormSchema } from "@/app/utils/definitions";
+import { FormState, SignUpFormSchema } from "@/app/auth/definitions";
+import { createSession } from "@/app/auth/session";
 
 export async function signup(
   state: FormState,
@@ -30,21 +31,30 @@ export async function signup(
 
     const result = await response.json();
 
-    // Will need to generate cases for specific error codes.
+    // Cases for specific error codes.
     if (!response.ok) {
+      if (response.status === 409) {
+        return { errors: { email: ["User with this email already exists."] } };
+      }
       return {
-        errors: result.errors || { message: ["Signup failed."] },
+        errors: { message: "Signup failed." },
       };
     }
 
+    // 3. Create session
+    const sessionResult = await createSession(result.id);
+
+    if (sessionResult.success) {
+      return { redirectTo: "/" };
+    }
+
     return {
-      message: "Signup successful!",
+      message: "Signup successful, but session could not be created.",
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error("API Error:", error);
     return {
-      message: "Something went wrong. Try again later.",
+      errors: { message: "Something went wrong. Try again later." },
     };
   }
-  // 3. Create session
 }

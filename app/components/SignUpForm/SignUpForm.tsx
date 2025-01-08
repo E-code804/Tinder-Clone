@@ -1,9 +1,16 @@
 "use client";
-import { useActionState } from "react";
-import { signup } from "./actions";
+import { signup } from "@/app/auth/actions";
+import { useActionState, useEffect } from "react";
 
 const SignUpForm = () => {
   const [state, action, pending] = useActionState(signup, undefined);
+
+  useEffect(() => {
+    if (state?.redirectTo) {
+      window.location.href = state.redirectTo;
+    }
+  }, [state]);
+
   return (
     <form className="signup__form" action={action}>
       <label htmlFor="name">Name</label>
@@ -40,6 +47,7 @@ const SignUpForm = () => {
       <button type="submit" disabled={pending}>
         {pending ? "Submitting..." : "Sign Up"}
       </button>
+      {state?.errors?.message && <p>{state.errors.message}</p>}
     </form>
   );
 };

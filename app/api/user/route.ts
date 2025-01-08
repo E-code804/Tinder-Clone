@@ -50,14 +50,17 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(await image.arrayBuffer());
     const base64Image = buffer.toString("base64");
 
-    await User.create({
+    const newUser = await User.create({
       name,
       email,
       password: hashedPassword,
       image: base64Image,
     });
 
-    return NextResponse.json({ message: "User created" }, { status: 201 });
+    return NextResponse.json(
+      { message: "User created", id: newUser._id },
+      { status: 201 }
+    );
   } catch (err) {
     return NextResponse.json({
       error: err instanceof Error ? err.message : "An unknown error occurred",
