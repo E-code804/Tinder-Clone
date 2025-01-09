@@ -1,4 +1,4 @@
-.signup__page {
+.forms__page {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,18 +8,18 @@
   background-color: #fbecec;
 }
 
-.signup__page h1 {
+.forms__page h1 {
   font-size: 2.5rem;
   color: #333;
   margin-bottom: 0.5rem;
 }
 
-.signup__page p {
+.forms__page p {
   color: #666;
   margin-bottom: 2rem;
 }
 
-.signup__form {
+.forms__form {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -30,7 +30,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.signup__form input {
+.forms__form input {
   padding: 12px;
   margin-bottom: 1rem;
   border: 1px solid #ccc;
@@ -38,23 +38,23 @@
   font-size: 1rem;
 }
 
-.signup__form input:focus {
+.forms__form input:focus {
   border-color: #ff5864;
   outline: none;
   box-shadow: 0 0 5px rgba(255, 88, 100, 0.5);
 }
 
-.signup__form p {
+.forms_form p {
   color: #ff5864;
   margin: -0.75rem 0 1rem;
   font-size: 0.9rem;
 }
 
-.signup__form label {
+.forms__form label {
   font-weight: bold;
 }
 
-.signup__form button {
+.forms__form button {
   padding: 14px;
   font-size: 1rem;
   color: white;
@@ -66,21 +66,21 @@
   transition: background-color 0.3s ease;
 }
 
-.signup__form button:hover {
+.forms__form button:hover {
   background-color: #e44e5a;
 }
 
-.signup__form button:active {
+.forms__form button:active {
   background-color: #cc3f4c;
 }
 
 @media (max-width: 600px) {
-  .signup__form {
+  .forms__form {
     width: 90%;
     padding: 1.5rem;
   }
 
-  .signup__page h1 {
+  .forms__page h1 {
     font-size: 2rem;
   }
 }

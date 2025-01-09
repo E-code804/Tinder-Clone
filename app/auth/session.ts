@@ -38,7 +38,7 @@ export async function createSession(userId: string) {
     path: "/",
   });
 
-  return { success: true };
+  return { success: true, redirectTo: "/" };
 }
 
 export async function verifySession() {

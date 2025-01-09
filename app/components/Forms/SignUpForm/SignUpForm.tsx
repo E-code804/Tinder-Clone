@@ -12,7 +12,7 @@ const SignUpForm = () => {
   }, [state]);
 
   return (
-    <form className="signup__form" action={action}>
+    <form className="forms__form" action={action}>
       <label htmlFor="name">Name</label>
       <input
         type="text"
