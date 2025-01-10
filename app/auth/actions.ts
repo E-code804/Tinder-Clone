@@ -7,7 +7,7 @@ import {
 } from "@/app/auth/definitions";
 import { createSession, deleteSession } from "@/app/auth/session";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+const baseUrl = true ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000";
 
 export async function logout() {
   const deleteSessionResult = await deleteSession();
