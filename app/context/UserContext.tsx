@@ -4,7 +4,9 @@ import { createContext, ReactNode, useReducer } from "react";
 import { UserContextAction, UserContextState } from "../interfaces/UserInterfaces";
 
 const initialState: UserContextState = {
-  userId: new Types.ObjectId("67708599f8f82821ba418f9c"),
+  userId: new Types.ObjectId(
+    localStorage.getItem("userId") ?? "000000000000000000000000"
+  ),
   cards: [],
   undoCards: [],
 };
@@ -17,6 +19,7 @@ export const UserContext = createContext<{
 export const userReducer = (state: UserContextState, action: UserContextAction) => {
   switch (action.type) {
     case "SET_CARDS":
+      console.log(`userId: ${state.userId}`);
       return { ...state, cards: action.payload, undoCards: [] };
     // REMOVE_USER is used when the user either likes or removes the current user they see
     case "REMOVE_CARD":
@@ -43,6 +46,12 @@ export const userReducer = (state: UserContextState, action: UserContextAction) 
         cards: [...state.cards, undoUser],
         undoCards: updatedUndoCards,
       };
+    case "SET_USERID": {
+      const { userId } = action.payload;
+      console.log(`userId: ${userId}`);
+
+      return { ...state, userId };
+    }
     default:
       return state;
   }

@@ -27,6 +27,8 @@ const TinderCards = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log(userState.userId.toString());
+
       const response = await fetch(`/api/user/discover/${userState.userId}`);
 
       if (!response.ok) {

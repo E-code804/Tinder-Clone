@@ -26,7 +26,8 @@ export type UserContextState = {
 export type UserContextAction =
   | { type: "SET_CARDS"; payload: Person[] }
   | { type: "REMOVE_CARD"; payload: { userId: Types.ObjectId } }
-  | { type: "UNDO_CARD" };
+  | { type: "UNDO_CARD" }
+  | { type: "SET_USERID"; payload: { userId: Types.ObjectId } };
 
 export type MessageContextState = {
   chats: ChatType[];

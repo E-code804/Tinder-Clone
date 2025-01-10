@@ -1,4 +1,3 @@
-import Image from "next/image";
 import DiscoverActions from "./components/DiscoverActions/DiscoverActions";
 import Header from "./components/Header/Header";
 import TinderCards from "./components/TinderCards/TinderCards";

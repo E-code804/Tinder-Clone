@@ -31,7 +31,7 @@ export const userReducer = (
   }
 };
 
-export const MessageConextProvider = ({ children }: { children: ReactNode }) => {
+export const MessageContextProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(userReducer, initialMessageState);
 
   return (

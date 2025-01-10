@@ -1,12 +1,17 @@
 "use client";
 import { signup } from "@/app/auth/actions";
+import { useUser } from "@/app/hooks/useUserContext";
+import { Types } from "mongoose";
 import { useActionState, useEffect } from "react";
 
 const SignUpForm = () => {
   const [state, action, pending] = useActionState(signup, undefined);
+  const { dispatch: userDispatch } = useUser();
 
   useEffect(() => {
     if (state?.redirectTo) {
+      const userId = new Types.ObjectId(state.id);
+      userDispatch({ type: "SET_USERID", payload: { userId } });
       window.location.href = state.redirectTo;
     }
   }, [state]);
@@ -18,9 +23,9 @@ const SignUpForm = () => {
         type="text"
         name="name"
         placeholder="Enter your name"
-        value={"TestSignup"}
+        // value={"TestSignup"}
       />
-      {state?.errors?.name && <p>{state.errors.name}</p>}
+      {state?.errors?.name && <p className="error__message">{state.errors.name}</p>}
 
       <label htmlFor="email">Email</label>
       <input
@@ -29,7 +34,9 @@ const SignUpForm = () => {
         placeholder="Enter your email address"
         value={"signup@signup.com"}
       />
-      {state?.errors?.email && <p>{state.errors.email}</p>}
+      {state?.errors?.email && (
+        <p className="error__message">{state.errors.email}</p>
+      )}
 
       <label htmlFor="password">Password</label>
       <input
@@ -38,16 +45,22 @@ const SignUpForm = () => {
         placeholder="Create a password"
         value={"Signup2020@"}
       />
-      {state?.errors?.password && <p>{state.errors.password}</p>}
+      {state?.errors?.password && (
+        <p className="error__message">{state.errors.password}</p>
+      )}
 
       <label htmlFor="image">Profile Picture</label>
       <input type="file" name="image" accept="image/png, image/jpeg" />
-      {state?.errors?.image && <p>{state.errors.image}</p>}
+      {state?.errors?.image && (
+        <p className="error__message">{state.errors.image}</p>
+      )}
 
       <button type="submit" disabled={pending}>
         {pending ? "Submitting..." : "Sign Up"}
       </button>
-      {state?.errors?.message && <p>{state.errors.message}</p>}
+      {state?.errors?.message && (
+        <p className="error__message">{state.errors.message}</p>
+      )}
     </form>
   );
 };
