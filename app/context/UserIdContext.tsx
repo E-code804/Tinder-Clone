@@ -5,16 +5,22 @@ import { createContext, ReactNode, useContext, useState } from "react";
 
 // Define the shape of the context
 interface UserIdContextValue {
-  userId: Types.ObjectId | null;
-  setUserId: (userId: Types.ObjectId | null) => void;
+  userId: string | null;
+  setUserId: (userId: string | null) => void;
 }
 
 // Create the context
 const UserIdContext = createContext<UserIdContextValue | undefined>(undefined);
 
-// Create a provider component
-export function UserIdProvider({ children }: { children: ReactNode }) {
-  const [userId, setUserId] = useState<Types.ObjectId | null>(null);
+// Provider component
+export function UserIdProvider({
+  children,
+  initialUserId,
+}: {
+  children: ReactNode;
+  initialUserId: string | null;
+}) {
+  const [userId, setUserId] = useState<string | null>(initialUserId);
 
   return (
     <UserIdContext.Provider value={{ userId, setUserId }}>

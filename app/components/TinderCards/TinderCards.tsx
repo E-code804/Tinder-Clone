@@ -1,5 +1,6 @@
 "use client";
 
+import { useUserId } from "@/app/context/UserIdContext";
 import { useUser } from "@/app/hooks/useUserContext";
 import { sendLike } from "@/app/utils/sendLike";
 import { Types } from "mongoose";
@@ -8,16 +9,16 @@ import TinderCard from "react-tinder-card";
 import "./styles.css";
 
 const TinderCards = () => {
-  // const userId = new Types.ObjectId("67708034f8f82821ba418f98");
   const [loading, setLoading] = useState<Boolean>(true);
   const { state: userState, dispatch: userDispatch } = useUser();
+  const { userId } = useUserId();
 
   const swiped = async (direction: any, id: Types.ObjectId) => {
-    userDispatch({ type: "REMOVE_CARD", payload: { userId: id } });
+    userDispatch({ type: "REMOVE_CARD", payload: { userId: id.toString() } });
     console.log(`removing: ${id}, ${direction}`);
 
     if (direction === "right") {
-      await sendLike(userState.userId, id);
+      await sendLike(userId, id);
     }
   };
 
@@ -27,9 +28,9 @@ const TinderCards = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(userState.userId.toString());
+      console.log(userId);
 
-      const response = await fetch(`/api/user/discover/${userState.userId}`);
+      const response = await fetch(`/api/user/discover/${userId}`);
 
       if (!response.ok) {
         // Adjust error msg here

@@ -1,7 +1,7 @@
 "use client";
 
+import { useUserId } from "@/app/context/UserIdContext";
 import { useMessage } from "@/app/hooks/useMessageContext";
-import { useUser } from "@/app/hooks/useUserContext";
 import { Person } from "@/app/interfaces/UserInterfaces";
 import { Types } from "mongoose";
 import React, { useEffect, useState } from "react";
@@ -10,8 +10,7 @@ import "./styles.css";
 const MatchList = () => {
   const [matchedUsers, setMatchedUsers] = useState<Person[]>([]);
   const [loading, setLoading] = useState<Boolean>(true);
-  const { state } = useUser();
-  const { userId } = state;
+  const { userId } = useUserId();
   const [clickedMatchId, setclickedMatchId] = useState<Types.ObjectId>(
     new Types.ObjectId()
   );
@@ -65,7 +64,7 @@ const MatchList = () => {
       {loading ? (
         <p>Loading Users</p>
       ) : (
-        matchedUsers.map((user) => (
+        matchedUsers?.map((user) => (
           <div
             key={user._id.toString()}
             className={`matchedUser ${clickedMatchId === user._id ? "clicked" : ""}`}

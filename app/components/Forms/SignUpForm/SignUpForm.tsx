@@ -1,17 +1,12 @@
 "use client";
 import { signup } from "@/app/auth/actions";
-import { useUser } from "@/app/hooks/useUserContext";
-import { Types } from "mongoose";
 import { useActionState, useEffect } from "react";
 
 const SignUpForm = () => {
   const [state, action, pending] = useActionState(signup, undefined);
-  const { dispatch: userDispatch } = useUser();
 
   useEffect(() => {
     if (state?.redirectTo) {
-      const userId = new Types.ObjectId(state.id);
-      userDispatch({ type: "SET_USERID", payload: { userId } });
       window.location.href = state.redirectTo;
     }
   }, [state]);
@@ -32,7 +27,7 @@ const SignUpForm = () => {
         type="email"
         name="email"
         placeholder="Enter your email address"
-        value={"signup@signup.com"}
+        //value={"signup@signup.com"}
       />
       {state?.errors?.email && (
         <p className="error__message">{state.errors.email}</p>
@@ -43,7 +38,7 @@ const SignUpForm = () => {
         type="password"
         name="password"
         placeholder="Create a password"
-        value={"Signup2020@"}
+        // value={"Signup2020@"}
       />
       {state?.errors?.password && (
         <p className="error__message">{state.errors.password}</p>

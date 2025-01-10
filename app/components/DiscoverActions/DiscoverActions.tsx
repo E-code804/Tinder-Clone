@@ -1,16 +1,17 @@
 "use client";
+import { useUserId } from "@/app/context/UserIdContext";
 import { useUser } from "@/app/hooks/useUserContext";
 import { sendLike } from "@/app/utils/sendLike";
 import CloseIcon from "@mui/icons-material/Close";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { IconButton } from "@mui/material";
-import { Types } from "mongoose";
 import React from "react";
 import "./styles.css";
 
 const DiscoverActions = () => {
   const { state, dispatch } = useUser();
+  const { userId } = useUserId();
   // TODO: Add undo logic to the backend
   const handleReplayClick = () => {
     dispatch({ type: "UNDO_CARD" });
@@ -18,13 +19,13 @@ const DiscoverActions = () => {
 
   const handleLeftClick = () => {
     const removeId = state.cards[state.cards.length - 1]._id;
-    dispatch({ type: "REMOVE_CARD", payload: { userId: removeId } });
+    dispatch({ type: "REMOVE_CARD", payload: { userId: removeId.toString() } });
   };
 
   const handleRightClick = async () => {
     const removeId = state.cards[state.cards.length - 1]._id;
-    dispatch({ type: "REMOVE_CARD", payload: { userId: removeId } });
-    await sendLike(state.userId, removeId);
+    dispatch({ type: "REMOVE_CARD", payload: { userId: removeId.toString() } });
+    await sendLike(userId, removeId);
   };
 
   // Removed the super like and boost btns for simplicity.

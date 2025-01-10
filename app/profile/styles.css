@@ -1,0 +1,59 @@
+/* Main container for user information */
+.user__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #fbe7e7; /* Light Tinder-like background */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 84.5vh;
+}
+
+/* Loading text style */
+.user__info__loading {
+  font-size: 1.5rem;
+  color: #fd5068; /* Tinder's primary red color */
+  text-align: center;
+}
+
+/* User image style */
+.user__info__image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 2px solid #fd5068; /* Tinder's red for the border */
+}
+
+/* Username style */
+.user__info__username {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333; /* Neutral dark color for text */
+  margin-bottom: 15px;
+}
+
+/* Logout button style */
+.user__info__logout {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff; /* White text */
+  background-color: #fd5068; /* Tinder's primary red */
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.user__info__logout:hover {
+  background-color: #e94560; /* Slightly darker red for hover */
+  transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+.user__info__logout:active {
+  transform: scale(0.95); /* Slightly shrink button on click */
+}

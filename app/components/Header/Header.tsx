@@ -9,9 +9,11 @@ import "./styles.css";
 const Header = () => {
   return (
     <div className="header">
-      <IconButton>
-        <PersonIcon fontSize="large" className="header__icon" />
-      </IconButton>
+      <Link href="/profile">
+        <IconButton>
+          <PersonIcon fontSize="large" className="header__icon" />
+        </IconButton>
+      </Link>
 
       <Link href="/">
         <img

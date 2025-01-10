@@ -18,16 +18,21 @@ export interface ChatType {
 }
 
 export type UserContextState = {
-  userId: Types.ObjectId;
   cards: Person[];
   undoCards: Person[];
 };
 
+// Define the shape of the context
+interface UserIdContextValue {
+  userId: string | null;
+  setUserId: (userId: string | null) => void;
+}
+
 export type UserContextAction =
   | { type: "SET_CARDS"; payload: Person[] }
-  | { type: "REMOVE_CARD"; payload: { userId: Types.ObjectId } }
+  | { type: "REMOVE_CARD"; payload: { userId: string } }
   | { type: "UNDO_CARD" }
-  | { type: "SET_USERID"; payload: { userId: Types.ObjectId } };
+  | { type: "SET_USERID"; payload: { userId: string } };
 
 export type MessageContextState = {
   chats: ChatType[];

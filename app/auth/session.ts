@@ -72,5 +72,6 @@ export async function updateSession() {
 
 export async function deleteSession() {
   (await cookies()).delete("session");
-  redirect("/signup");
+  return { success: true, redirectTo: "/login" };
+  // redirect("/signup");
 }

@@ -5,9 +5,18 @@ import {
   LoginFormSchema,
   SignUpFormSchema,
 } from "@/app/auth/definitions";
-import { createSession } from "@/app/auth/session";
+import { createSession, deleteSession } from "@/app/auth/session";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+export async function logout() {
+  const deleteSessionResult = await deleteSession();
+
+  if (deleteSessionResult.success) {
+    return { redirectTo: "/login" };
+  }
+  return { message: "Deletion failed." };
+}
 
 export async function login(
   state: FormState,

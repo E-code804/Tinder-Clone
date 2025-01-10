@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 // Protected and public routes
-const protectedRoutes = ["/matches", "/", "userpage"];
+const protectedRoutes = ["/matches", "/", "/profile"];
 const publicRoutes = ["/login", "/signup"];
 
 export default async function middleware(req: NextRequest) {
@@ -24,9 +24,9 @@ export default async function middleware(req: NextRequest) {
   }
 
   // Redirect logged-in users away from the public routes.
-  //   if (isPublicRoute && session?.userId) {
-  //     return NextResponse.redirect(new URL("/", req.nextUrl));
-  //   }
+  if (isPublicRoute && session?.userId) {
+    return NextResponse.redirect(new URL("/", req.nextUrl));
+  }
 
   return NextResponse.next();
 }

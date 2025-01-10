@@ -1,9 +1,10 @@
 import { Types } from "mongoose";
 
 export const sendLike = async (
-  userId: Types.ObjectId,
+  userId: string | null,
   likedUserId: Types.ObjectId
 ) => {
+  if (!userId) return;
   const response = await fetch(
     `http://localhost:3000/api/user/likes/sent/${userId}`,
     {
