@@ -17,11 +17,17 @@ export async function encrypt(payload: SessionPayload) {
 
 export async function decrypt(session: string | undefined = "") {
   try {
+    console.log("Decrypting session:", session);
+
     const { payload } = await jwtVerify(session, key, {
       algorithms: ["HS256"],
     });
+
+    console.log("Decrypted payload:", payload);
+
     return payload;
   } catch (error) {
+    console.error("JWT verification error:", error);
     return null;
   }
 }
