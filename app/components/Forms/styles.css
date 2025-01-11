@@ -50,6 +50,11 @@
   font-size: 0.9rem;
 }
 
+.error__message__btn {
+  color: #ff5864;
+  font-size: 0.9rem;
+}
+
 .forms__form label {
   font-weight: bold;
 }

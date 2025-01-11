@@ -39,7 +39,7 @@ const LoginForm = () => {
         {pending ? "Submitting..." : "Login"}
       </button>
       {state?.errors?.message && (
-        <p className="error__message">{state.errors.message}</p>
+        <p className="error__message__btn">{state.errors.message}</p>
       )}
     </form>
   );

@@ -41,14 +41,14 @@ export async function login(
       body: formData,
     });
 
-    const result = await response.json();
-
     // Cases for specific error codes.
     if (!response.ok) {
       return {
-        errors: { message: result.message },
+        errors: { message: "Response failed" },
       };
     }
+
+    const result = await response.json();
 
     // 3. Create session
     const sessionResult = await createSession(result.id);
@@ -64,6 +64,8 @@ export async function login(
     };
   } catch (error: any) {
     console.error("API Error:", error);
+    console.log(`${baseUrl}/api/auth`);
+
     return {
       errors: { message: "Something went wrong. Try again later." },
     };
@@ -95,8 +97,6 @@ export async function signup(
       body: formData,
     });
 
-    const result = await response.json();
-
     // Cases for specific error codes.
     if (!response.ok) {
       if (response.status === 409) {
@@ -106,6 +106,8 @@ export async function signup(
         errors: { message: "Signup failed." },
       };
     }
+
+    const result = await response.json();
 
     // 3. Create session
     const sessionResult = await createSession(result.id);

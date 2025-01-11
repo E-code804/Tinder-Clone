@@ -54,7 +54,7 @@ const SignUpForm = () => {
         {pending ? "Submitting..." : "Sign Up"}
       </button>
       {state?.errors?.message && (
-        <p className="error__message">{state.errors.message}</p>
+        <p className="error__message__btn">{state.errors.message}</p>
       )}
     </form>
   );
