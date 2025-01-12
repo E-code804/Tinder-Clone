@@ -1,5 +1,6 @@
 "use client";
 import { login } from "@/app/auth/actions";
+import Link from "next/link";
 import { useActionState, useEffect } from "react";
 
 const LoginForm = () => {
@@ -38,6 +39,14 @@ const LoginForm = () => {
       <button type="submit" disabled={pending}>
         {pending ? "Submitting..." : "Login"}
       </button>
+
+      <p className="account__page">
+        Don't have an account?{" "}
+        <Link href="/signup">
+          <strong>Sign up here</strong>
+        </Link>
+      </p>
+
       {state?.errors?.message && (
         <p className="error__message__btn">{state.errors.message}</p>
       )}

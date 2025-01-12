@@ -15,3 +15,11 @@ body {
     color-scheme: dark;
   }
 } */
+.account__page {
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.account__page strong {
+  text-decoration: underline;
+}

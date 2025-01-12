@@ -1,5 +1,4 @@
 import { decrypt } from "@/app/auth/session";
-import { Types } from "mongoose";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { cookies } from "next/headers";

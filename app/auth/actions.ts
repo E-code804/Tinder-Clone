@@ -44,7 +44,7 @@ export async function login(
     // Cases for specific error codes.
     if (!response.ok) {
       return {
-        errors: { message: "Response failed" },
+        errors: { message: (await response.json()).message },
       };
     }
 

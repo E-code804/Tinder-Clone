@@ -1,5 +1,6 @@
 "use client";
 import { signup } from "@/app/auth/actions";
+import Link from "next/link";
 import { useActionState, useEffect } from "react";
 
 const SignUpForm = () => {
@@ -53,6 +54,14 @@ const SignUpForm = () => {
       <button type="submit" disabled={pending}>
         {pending ? "Submitting..." : "Sign Up"}
       </button>
+
+      <p className="account__page">
+        Already have an account?{" "}
+        <Link href="/login">
+          <strong>Login here</strong>
+        </Link>
+      </p>
+
       {state?.errors?.message && (
         <p className="error__message__btn">{state.errors.message}</p>
       )}
