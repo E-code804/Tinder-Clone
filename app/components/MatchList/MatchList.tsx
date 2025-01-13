@@ -63,6 +63,8 @@ const MatchList = () => {
     <div className="matchList">
       {loading ? (
         <p>Loading Users</p>
+      ) : !matchedUsers || matchedUsers.length === 0 ? (
+        <p>No matches</p>
       ) : (
         matchedUsers?.map((user) => (
           <div
