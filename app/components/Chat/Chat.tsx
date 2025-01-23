@@ -2,6 +2,7 @@
 
 import { useUserId } from "@/app/context/UserIdContext";
 import { useMessage } from "@/app/hooks/useMessageContext";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { useState } from "react";
 import "./styles.css";
 
@@ -72,7 +73,7 @@ const Chat = () => {
           onChange={handleInputChange}
         />
         <button type="submit" className="send__chat__btn" onClick={handleSubmit}>
-          Send
+          <ArrowUpwardIcon />
         </button>
       </form>
     </div>

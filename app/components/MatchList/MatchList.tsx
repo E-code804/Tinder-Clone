@@ -72,7 +72,11 @@ const MatchList = () => {
             className={`matchedUser ${clickedMatchId === user._id ? "clicked" : ""}`}
             onClick={() => getChats(user._id)}
           >
-            <img src={`data:image/jpeg;base64,${user.image}`} /> <h1>{user.name}</h1>
+            <img
+              className="match__img"
+              src={`data:image/jpeg;base64,${user.image}`}
+            />{" "}
+            <h1 className="match__name">{user.name}</h1>
           </div>
         ))
       )}
